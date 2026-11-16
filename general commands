@@ -1,0 +1,45 @@
+kubectl get nodes
+kubectl create namespace argocd
+
+Install ArgoCd
+kubectl apply -n argocd --server-side --force-conflicts \
+  -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+verify pods
+kubectl get pods -n argocd
+
+Access Argicd
+kubectl port-forward svc/argocd-server -n argocd 8080:443 --address 0.0.0.0
+
+REtrieve Admin Password
+kubectl get secret argocd-initial-admin-secret \
+  -n argocd \
+  -o jsonpath='{.data.password}' | base64 -d
+
+
+Connect the repo 
+
+Now deploy the nginx app
+kubectl apply -f https://raw.githubusercontent.com/aarti784/argocd-minikube-demo/main/application.yaml
+kubectl get applications -n argocd
+
+kubectl get svc -n demo
+kubectl port-forward -n demo svc/nginx-demo-service 8081:80 --address 0.0.0.0
+
+
+Nginx troubleshooting steps
+
+kubectl get svc nginx-demo-service -n demo
+
+kubectl get endpointslices -n demo \
+  -l kubernetes.io/service-name=nginx-demo-service
+
+Restart port forwarding
+kubectl port-forward -n demo \
+  svc/nginx-demo-service 8081:80 \
+  --address 0.0.0.0
+
+
+curl -I http://localhost:8081
+
+change config map as <h2>Application Version 2 - GitOps Successful!</h2>
