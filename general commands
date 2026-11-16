@@ -43,3 +43,11 @@ kubectl port-forward -n demo \
 curl -I http://localhost:8081
 
 change config map as <h2>Application Version 2 - GitOps Successful!</h2>
+
+
+Restart argocd
+kubectl rollout restart deployment -n argocd
+kubectl get pods -n argocd
+
+kubectl rollout status deployment/argocd-server -n argocd
+kubectl rollout status statefulset/argocd-application-controller -n argocd
