@@ -12,6 +12,7 @@ Access Argicd
 kubectl port-forward svc/argocd-server \
   -n argocd 8080:80 --address 0.0.0.0
 
+
 REtrieve Admin Password
 kubectl get secret argocd-initial-admin-secret \
   -n argocd \
